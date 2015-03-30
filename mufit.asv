@@ -82,8 +82,8 @@ function pushbutton_load_Callback(hObject, eventdata, handles)
     waitbar(7/10);
 
     % check size
-    datasize = size(data);
-    number_of_columns = datasize(2);
+    datasize = size(data)
+    number_of_columns = datasize(2)
     if ~has_two_columns(number_of_columns, filename, hObject, progressbar)
         return
     end

@@ -7,7 +7,7 @@ function handles = init_column_select( handles, number_of_columns )
         % label columns as 'column 1', 'column 2', ...
         set(handles.popupmenu1,'String', 1 : number_of_columns )
         set(handles.popupmenu2,'String', 1 : number_of_columns )
-        for k = 1 : number_of_colmuns
+        for k = 1 : number_of_columns
             handles.header = {handles.header, ['column ', int2str(k)]};
         end
     else
