@@ -78,7 +78,15 @@ function pushbutton_load_Callback(hObject, eventdata, handles)
     % load raw data
     filedata = importdata([pathname,filename], '\t');
     data = filedata.data;
-    header = filedata.textdata;
+    
+    % load header
+    % check if colheaders field is present
+    if size( fieldnames ( filedata ) ) >= 3
+        header = filedata.colheaders;
+    else
+        % manually process the textdata field
+        header = strsplit( filedata.textdata{1}, '\t' );
+    end
     waitbar(7/10);
 
     % check size

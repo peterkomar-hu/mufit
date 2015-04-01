@@ -15,3 +15,7 @@ function i_rising = find_rising_index(t, risingtime)
     while t(i_rising) > risingtime && i_rising > 1
         i_rising = i_rising - 1;
     end
+    
+    if i_rising < 1;
+        i_rising  = i_rising + 1;
+    end

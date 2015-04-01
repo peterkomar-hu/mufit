@@ -4,17 +4,16 @@ function handles = init_column_select( handles, number_of_columns )
 % datafile
 
     if length(handles.header) < number_of_columns
-        % label columns as 'column 1', 'column 2', ...
-        set(handles.popupmenu1,'String', 1 : number_of_columns )
-        set(handles.popupmenu2,'String', 1 : number_of_columns )
-        for k = 1 : number_of_columns
-            handles.header = {handles.header, ['column ', int2str(k)]};
+        % label headerless columns as 'column #'
+        headerstring = strjoin(handles.header, '\t');
+        for k = (length(handles.header) + 1) : number_of_columns
+            headerstring = sprintf('%s\t(column %s)', headerstring, int2str(k) );
         end
-    else
-        % label columns with strings from the header row
-        set(handles.popupmenu1,'String', handles.header )
-        set(handles.popupmenu2,'String', handles.header )
+        handles.header = strsplit(headerstring, '\t');
     end
+    set(handles.popupmenu1,'String', handles.header )
+    set(handles.popupmenu2,'String', handles.header )
+
     % pick column 1 for x by default
     set(handles.popupmenu1,'Value',1);
     handles.col_t = 1;

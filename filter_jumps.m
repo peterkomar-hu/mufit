@@ -51,17 +51,19 @@ function [downedge, upedge, edge, smooth_begin, smooth_end] = filter_jumps(handl
     i_rising = find_rising_index(t, handles.risingtime);
     k = 1;
     % find the first jump after the previous rising time point
-    while edge(k) < i_rising && k < length(edge)
-        k = k + 1;
+    if k < length(edge)
+        while edge(k) < i_rising && k < length(edge)
+            k = k + 1;
+        end
+        % increase the rising time up to the jump
+        while i_rising < edge(k)
+            i_rising = i_rising + 1;
+        end
+        i_rising = i_rising - 1;
     end
-    % increase the rising time up to the jump
-    while i_rising < edge(k)
-        i_rising = i_rising + 1;
-    end
-    i_rising = i_rising - 1;
 
     % setting the start of smooth region for the rising exponential
-    CUTOFF_risingfitstart = floor(i_rising - i_rising/3);
+    CUTOFF_risingfitstart = ceil(i_rising - i_rising/3);
 
     % containers for bounds of smooth regions
     smooth_begin = [];
@@ -82,12 +84,13 @@ function [downedge, upedge, edge, smooth_begin, smooth_end] = filter_jumps(handl
     end
     % last oscillation period (which is likely to be terminated by i_end)
      k = length(edge);
-     if t(i_end) - t(edge(k)) > handles.minlength ...
-             && edge(k) > i_rising
-         smooth_begin = [smooth_begin; edge(k)];
-         smooth_end = [smooth_end; i_end];
+     if k > 0
+         if t(i_end) - t(edge(k)) > handles.minlength ...
+                 && edge(k) > i_rising
+             smooth_begin = [smooth_begin; edge(k)];
+             smooth_end = [smooth_end; i_end];
+         end
      end
-
     % display the number of smooth regions
     num_of_regions = length(smooth_begin);
     set(handles.checkbox_smoothregions, ...
